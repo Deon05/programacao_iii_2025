@@ -27,6 +27,13 @@
                         </li>
                     </ul>
 
+                    <h2>Listagem de Patentes</h2>
+                    <ol>
+                        <li v-for="p in patentes" :key="p.descricao">
+                            {{p.codigo}} {{p.descricao}}
+                        </li>
+                    </ol>
+
 
 
                     <ul id="example-2">
