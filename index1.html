@@ -35,14 +35,40 @@
                     </ol>
 
 
-
+                    <h2>Listagem de Estrelas(Apenas 10+)</h2>
                     <ul id="example-2">
                         <li v-for="j in jogadores" :key="j.nickname">
 
                             <p v-if="j.qtd_estrela > 10">
                                 {{ j.nickname }} {{ j.senha }} {{ j.qtd_estrela }}
                             </p>
-                            <p v-else>jogador não tem 10 estrelas ...</p>
+                            <p v-else>{{j.nickname}} não tem 10 estrelas ...</p>
+
+                        </li>
+                    </ul>
+
+                    <h2>Listagem de Estrelas(Apenas 10-)</h2>
+                    <ul id="example-3">
+                        <li v-for="j in jogadores" :key="j.nickname">
+
+                            <p v-if="j.qtd_estrela < 10">
+                                {{ j.nickname }} <span style="font-weight: bold;">{{ j.qtd_estrela }} </span>
+                            </p>
+                            <p v-else>{{j.nickname}} tem 10 ou mais estrelas ...</p>
+
+                        </li>
+                    </ul>
+
+                    <h2>Listagem de Estrelas</h2>
+                    <ul id="example-4">
+                        <li v-for="j in jogadores" :key="j.nickname">
+
+                            <p v-if="j.qtd_estrela > 10">
+                                {{ j.nickname }} <span style="font-weight: bold;">{{ j.qtd_estrela }} </span>
+                            </p>
+                            <p v-else> 
+                                {{j.nickname}} {{ j.qtd_estrela }}
+                            </p>
 
                         </li>
                     </ul>
@@ -53,6 +79,7 @@
                             <tr><td>Codigo</td>
                                 <td>Data</td>
                                 <td>Jogador</td>
+                                <td>Patente</td>
                                 <td>Quantidade de Estrelas</td>
                             </tr>
                             <tr v-for="p in partidas" :key="p.codigo">
@@ -60,6 +87,7 @@
                                <td> {{p.codigo}} </td>
                                <td> {{p.data}}</td>
                                <td> {{p.jogador.nickname}}</td>
+                               <td> {{p.jogador.patente}}</td>
                                <td> {{p.jogador.qtd_estrela}}</td>
                             </tr>
 
@@ -90,15 +118,18 @@
                 partidas:   [{codigo: 1, data: '28/02/2023', 
                                            jogador: {nickname: 'joaozinho', 
                                                      qtd_estrela: 5, 
-                                                     senha: '123'}},
+                                                     senha: '123',
+                                                     patente: 'Prata'}},
                              {codigo: 2, data: '10/02/2023', 
                                            jogador: {nickname: 'bastião', 
                                                      qtd_estrela: 0, 
-                                                     senha: '456'}},
+                                                     senha: '456',
+                                                     patente: 'Bronze'}},
                              {codigo: 3, data: '06/03/2025', 
                                            jogador: {nickname: 'ricardo', 
                                                      qtd_estrela: 20, 
-                                                     senha: '555'}}                     
+                                                     senha: '555',
+                                                     patente: 'Diamante'}}                     
                             ]                         
             };
         
