@@ -14,7 +14,7 @@
 
                     <li v-for="j in jogadores">
                                                                         
-                        <big>Jogador:</big><small>{{j.nickname}}</small> - <big>Estrelas:</big><small>{{j.qtd_estrela}} - <big>Pontos:</big><small>{{j.qtd_pontos}}</small> - <big>Senha:</big><small>{{j.senha}}</small>                        
+                        <big>Jogador:</big><small>{{j.nickname}}</small> - <big>Estrelas:</big><small>{{j.qtd_estrela}} - <big>Pontos:</big><small>{{j.qtd_pontos}}</small> - <big>Data de nascimento:</big><small>{{j.dt_nascimento}}</small> - <big>Senha:</big><small>{{j.senha}}</small>                        
                                                
                     </li>
                
@@ -80,6 +80,7 @@
                                         if(input_senha.length == 4){
 
                                             this.jogadores.push({
+                                                dt_nascimento : input_dt_nascimento,
                                                 qtd_pontos: input_qtd_pontos,
                                                 qtd_estrela: input_qtd_estrela, 
                                                 senha:input_senha,
