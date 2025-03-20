@@ -18,6 +18,7 @@
                         <th scope="col">Quantidade de Estrelas</th>
                         <th scope="col">Patente</th>
                         <th scope="col">Endereço</th>
+                        <th scope="col">Arma</th> 
                         <th scope="col">Status</th>                            
                         <th scope="col">Alterar</th>
                         <th scope="col">Remover</th>
@@ -30,6 +31,7 @@
                                 <td>{{j.qtd_estrela}}</td>
                                 <td>{{j.patente.descricao}}</td>
                                 <td>{{j.endereco.cep}}</td>
+                                <td>{{j.arma.descricao}}</td>
                                 <td v-if="j.status"><input type="checkbox" checked disabled></td>
                                 <td v-if="!j.status"><input type="checkbox" disabled></td>
                                 <td><button v-on:click="editJogador(indice)" class="btn" type="button">Alterar</button></td>
@@ -77,6 +79,16 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="selectArma">Arma:</label>
+                            <select v-model="novo_jogador.arma" class="form-control" id="selectArma">
+                                <option disabled selected value="">Escolha um item</option>
+                                <option v-for="a in armas" v-bind:value="a">
+                                    {{ a.descricao }}
+                                  </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label for="checkStatus">Status:</label>
                             <input type="checkbox" v-model="novo_jogador.status" class="form-control" id="checkStatus"><!--Atividade 1 - Aplicar um input mais apropriado. -->
                         </div>
@@ -114,9 +126,11 @@
 
                     patentes: [{codigo: 1, descricao: 'Bronze'},{codigo: 2, descricao: 'Prata'},{codigo: 3, descricao: 'Ouro'}],
 
-                    jogadores:  [ {nickname: 'joaozinho', data_nascimento: '', qtd_estrela: 5, status: true, senha: '123', patente: {codigo: 1, descricao: 'Bronze'}, endereco: {id : 0, cep : '99010000'} }], 
+                    armas: [{codigo: 1, descricao: 'Ak-47'},{codigo: 2, descricao: 'AWP'},{codigo: 3, descricao: 'Deagle'},{codigo: 4, descricao: 'R8'}],
+
+                    jogadores:  [ {nickname: 'joaozinho', data_nascimento: '', qtd_estrela: 5, status: true, senha: '123', patente: {codigo: 1, descricao: 'Bronze'}, endereco: {id : 0, cep : '99010000'}, arma:{codigo: 1, descricao: 'Ak-47'} }], 
                             
-                    novo_jogador: {indice: '', nickname: '', data_nascimento: '', qtd_estrela: 0, status: false, senha: '', patente: '', endereco: ''}
+                    novo_jogador: {indice: '', nickname: '', data_nascimento: '', qtd_estrela: 0, status: false, senha: '', patente: '', endereco: '', arma: ''}
                 
             };
         
@@ -134,8 +148,11 @@
                         var input_status = this.novo_jogador.status;
                         var select_patente = this.novo_jogador.patente;
                         var select_endereco = this.novo_jogador.endereco;
+                        var select_arma = this.novo_jogador.arma;
+                        
 
                         //Atividade 5 - testar o tamanho do nickname e senha. Não permitir tamanhos menores do que 4 para ambos.
+                        if(select_arma != ''){
                         if (input_nickname && input_qtd_estrela > -1 && input_senha) {
                             
                             //documentação sobre o parseInt
@@ -148,7 +165,8 @@
                                                  status: input_status, 
                                                  senha:input_senha,
                                                  patente:select_patente,
-                                                 endereco: select_endereco}
+                                                 endereco: select_endereco,
+                                                 arma: select_arma}
                                                 );
                                 alert('Novo Jogador cadastrado !');
 
@@ -160,7 +178,8 @@
                                                  status: input_status, 
                                                  senha:input_senha,
                                                  patente:select_patente,
-                                                 endereco: select_endereco
+                                                 endereco: select_endereco,
+                                                 arma: select_arma
                                                 };
 
                                 alert('Jogador alterado !');
@@ -170,6 +189,9 @@
                         }else{
 
                             alert("Preencha nickname, estrelas e senha !!!");
+                        }
+                        }else{
+                            alert("Arma é obrigatório!")
                         }
                     },
 
@@ -182,6 +204,7 @@
                         this.novo_jogador.senha = this.jogadores[param_index].senha;
                         this.novo_jogador.patente = this.jogadores[param_index].patente;
                         this.novo_jogador.endereco = this.jogadores[param_index].endereco;
+                        this.novo_jogador.arma = this.jogadores[param_index].arma;
                         this.novo_jogador.status = this.jogadores[param_index].status;
                     },
 
@@ -195,6 +218,15 @@
                         this.jogadores.splice(param_index, 1);
 
                         alert('Removeu o jogador: ' + param_index);
+                        this.novo_jogador.indice = '';
+                        this.novo_jogador.nickname = ''; 
+                        this.novo_jogador.data_nascimento = '';
+                        this.novo_jogador.qtd_estrela = 0;
+                        this.novo_jogador.senha = '';
+                        this.novo_jogador.status = false;
+                        this.novo_jogador.patente = '';
+                        this.novo_jogador.arma = '';
+                        this.novo_jogador.endereco = '';
                     },
                     
                     cleanFormulario: function() {
@@ -206,6 +238,7 @@
                         this.novo_jogador.senha = '';
                         this.novo_jogador.status = false;
                         this.novo_jogador.patente = '';
+                        this.novo_jogador.arma = '';
                         this.novo_jogador.endereco = '';
                     }
 
