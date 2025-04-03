@@ -61,6 +61,31 @@
                         </tbody>
                     </table>
 
+                    <form id="formularioObjetivo">
+                        <h3>Formulário para cadastrar Objetivo</h3>
+                        <div>
+                          <div class="form-group">
+                            <label for="inputId">#:</label>
+                            <input type="text" v-model="novo_objetivo.id" class="form-control" id="inputId" disabled>
+                          </div>
+                          <div class="form-group">
+                              <label for="inputNome">Nome:</label>
+                              <input type="text" v-model="novo_objetivo.nome" class="form-control" id="inputNome">
+                          </div>
+                          <div class="form-group">
+                              <label for="input_qtd_pontos">Qtd. Pontos:</label>
+                              <input type="text" v-model="novo_objetivo.qtd_pontos" class="form-control" id="input_qtd_pontos">
+                          </div>   
+                          <div class="form-group">
+                            <label for="checkStatus">Status:</label>
+                            <input type="checkbox" v-model="novo_objetivo.status" id="checkStatus">
+                        </div>
+                            
+                          <button @click="addObjetivo" class="btn btn-primary" type="button">Salvar</button>
+                          <button @click="cleanFormularioObjetivo" class="btn btn-primary" type="button">Limpar</button>                         
+                        </div> 
+                    </form>
+
                 </div>
 
                 <div id="menu3" class="tab-pane fade">
@@ -299,14 +324,81 @@
                             alert("Preencha CEP !!!");
                         }
                     },
+
+                    addObjetivo: function(param_index){
+                        var input_id = this.novo_objetivo.id;  
+                        var input_nome = this.novo_objetivo.nome.trim(); 
+                        var input_qtd_pontos = this.novo_objetivo.qtd_pontos; 
+                        var input_status = this.novo_objetivo.status;
+
+                        if ( input_nome != '' && input_qtd_pontos != "") {
+                            
+                            //documentação sobre o parseInt
+                            //https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/parseInt
+                            if(isNaN(parseInt(this.novo_objetivo.indice))){
+                                var proximo_id;
+                                if(this.objetivos.length == 0){
+                                    proximo_id = 1;
+                                }else{
+                                    proximo_id = (parseInt(this.objetivos[this.objetivos.length-1].id) + 1)
+                                }
+                                this.objetivos.push({id: proximo_id, 
+                                                 nome: input_nome, 
+                                                 qtd_pontos: input_qtd_pontos,
+                                                status: input_status}
+                                                );
+
+                                
+                                alert('Novo Objetivo cadastrado !');
+
+                            }else{
+
+                                this.objetivos[this.novo_objetivo.indice] = { id: input_id,
+                                                 nome: input_nome, 
+                                                 qtd_pontos: input_qtd_pontos,  
+                                                 status: input_status, 
+                                                };
+
+                                alert('Objetivo alterado !');
+                            }
+                            localStorage.setItem("objetivos" , JSON.stringify(this.objetivos));
+                            this.cleanFormularioObjetivo();
+
+                        }else{
+
+                            alert("Preencha nome e Qtd. Pontos !!!");
+                        }
+                    },
+
                     //implementacao da questao 2
                     editObjetivo: function(param_index){
-
+                        this.novo_objetivo.indice = param_index;
+                        this.novo_objetivo.id = this.objetivos[param_index].id;
+                        this.novo_objetivo.nome = this.objetivos[param_index].nome; 
+                        this.novo_objetivo.qtd_pontos = this.objetivos[param_index].qtd_pontos; 
                     },
+
                     //implementacao da questao 2
                     remObjetivo: function(param_index){
+                        this.objetivos.splice(param_index, 1);
 
+                        localStorage.setItem("objetivos" , JSON.stringify(this.objetivos));
+
+                        alert('Removeu o Objetivo: ' + param_index)
+
+                        this.novo_objetivo.indice = '';
+                        this.novo_objetivo.id = '';
+                        this.novo_objetivo.nome = ''; 
+                        this.novo_objetivo.qtd_pontos = '';
                     },
+
+                    cleanFormularioObjetivo: function(param_index){
+                        this.novo_objetivo.indice = '';
+                        this.novo_objetivo.id = '';
+                        this.novo_objetivo.nome = ''; 
+                        this.novo_objetivo.qtd_pontos = '';
+                    },
+
                     editEndereco: function (param_index) {
                         this.novo_endereco.indice = param_index;
                         this.novo_endereco.id = this.enderecos[param_index].id;
@@ -423,6 +515,7 @@
 
                     this.cleanFormularioEndereco();
                     this.cleanFormularioJogador();
+                    this.cleanFormularioObjetivo();
                 }
           }); 
 
